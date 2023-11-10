@@ -6,7 +6,8 @@ import {Searchbar} from './Searchbar/Searchbar';
 import {ImageGalery} from './ImageGallery/ImageGallery';
 import {ButtonLoadMore} from './Button/Button';
 import {Loader} from './Loader/Loader';
-// import {Modal} from './Modal/Modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
@@ -38,6 +39,7 @@ componentDidUpdate(prevProps, prevState) {
        this.setState({ images: listImages.hits });
      
      } catch (error) {
+      toast.error('ERORR. Please try reloading this page!');
        this.setState({ error: true });
      } finally {
        this.setState({ isLoading: false });
@@ -77,6 +79,7 @@ componentDidUpdate(prevProps, prevState) {
 
       {images.length > 0 && (<ButtonLoadMore onClick={this.handleLoadMore}/>)}
 
+      <ToastContainer />
 
       <GlobalStyle/>
     </div>
