@@ -14,12 +14,11 @@ export const Searchbar = ({handleSubmit}) => (
       }}
 
       onSubmit={(values, actions) => {
-        console.log(values);
+        // console.log(values.search);
         handleSubmit(values.search);
         actions.resetForm();
 
       }}
-
 
       
     >

@@ -6,6 +6,7 @@ import {Searchbar} from './Searchbar/Searchbar';
 import {ImageGalery} from './ImageGallery/ImageGallery';
 import {ButtonLoadMore} from './Button/Button';
 import {Loader} from './Loader/Loader';
+// import {Modal} from './Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -16,27 +17,26 @@ export class App extends Component {
     page:"",
   }
 
-//   async componentDidMount(){
-//       try {
-//     this.setState({ isLoading: true, error: false });
-//     const listImages = await fetchImages();
-//     this.setState({ images: listImages.hits });
-//     // console.log(this.state.images);
-//   } catch (error) {
-//     this.setState({ error: true });
-//   } finally {
-//     this.setState({ isLoading: false });
-//   }
-// }
+componentDidUpdate(prevProps, prevState) {
+  if (
+    prevState.nameImage !== this.state.nameImage ||
+    prevState.page !== this.state.page
+  ) {
 
+    const newNameImage = this.state.nameImage.slice(this.state.nameImage.indexOf('/') + 1);
+    
+    this.addImages(newNameImage);
+  }
+}
 
- addImages = async () => {
-   const { nameImage, page } = this.state;
+ addImages = async (newNameImage) => {
+   const { page } = this.state;
+  
     try {
       this.setState({ isLoading: true, error: false });
-       const listImages = await fetchImages( nameImage, page);
+       const listImages = await fetchImages( newNameImage, page);
        this.setState({ images: listImages.hits });
-       // console.log(this.state.images);
+     
      } catch (error) {
        this.setState({ error: true });
      } finally {
@@ -46,40 +46,33 @@ export class App extends Component {
 
      handleSubmit = query => {
       this.setState({
-        nameImage: query,
+        nameImage: `${Date.now()}/${query}`,
         images: [], 
         page: 1, 
       });
     };
 
-
-  
-// addImages = async newImages => {
-//   try {
-//     this.setState({ isLoading: true });
-//     const addedImages = await addNewQuiz(newQuiz);
-//     this.setState(prevState => ({
-//       quizItems: [...prevState.quizItems, addedQuiz],
-//     }));
-//   } catch (error) {
-//     toast.error('ERROR ADDING QUIZ!');
-//   } finally {
-//     this.setState({ isLoading: false });
-//   }
-// };
+    handleLoadMore = () => {
+      this.setState(prevState => {
+        return {
+          page: prevState.page + 1,
+        };
+      });
+    };
 
   render(){
-    const {images, isLoading, error} = this.state;
+    const {images, isLoading} = this.state;
 
       return (
     <div>
-      <Searchbar onSubmit={this.handleSubmit}/>
+      <Searchbar handleSubmit={this.handleSubmit}/>
 
       {isLoading && (<Loader/>)}
 
       <ImageGalery images = {images}/>
 
-      {images.length > 0 && (<ButtonLoadMore/>)}
+      {images.length > 0 && (<ButtonLoadMore onClick={this.handleLoadMore}/>)}
+
 
       <GlobalStyle/>
     </div>
