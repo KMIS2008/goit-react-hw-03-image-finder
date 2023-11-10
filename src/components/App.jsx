@@ -61,13 +61,17 @@ componentDidUpdate(prevProps, prevState) {
     };
 
   render(){
-    const {images, isLoading} = this.state;
+    const {images, isLoading, error} = this.state;
 
       return (
     <div>
       <Searchbar handleSubmit={this.handleSubmit}/>
 
       {isLoading && (<Loader/>)}
+
+      {error && (
+          <b>Oops! Something went wrong! Please try reloading this page! </b>
+        )}
 
       <ImageGalery images = {images}/>
 

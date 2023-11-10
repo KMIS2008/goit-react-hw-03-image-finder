@@ -5,6 +5,8 @@ import {FormContainar,
         SearchFormButtonLabel,
         SearchFormInput} from './Searchbar.styled';
 
+import { BsSearch } from 'react-icons/bs';
+
 
 export const Searchbar = ({handleSubmit}) => (
   <div>
@@ -26,7 +28,9 @@ export const Searchbar = ({handleSubmit}) => (
       <FormContainar>
         <SearchForm>
           <SearchFormButton type="submit">
-            <SearchFormButtonLabel >Search</SearchFormButtonLabel>
+            <BsSearch/>
+            <SearchFormButtonLabel > 
+              Search</SearchFormButtonLabel>
           </SearchFormButton>
 
           <SearchFormInput
