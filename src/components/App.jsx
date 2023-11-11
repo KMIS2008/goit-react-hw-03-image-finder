@@ -15,7 +15,7 @@ export class App extends Component {
     isLoading: false,
     error: false,
     nameImage:"",
-    page:"",
+    page:1,
   }
 
 componentDidUpdate(prevProps, prevState) {
@@ -31,13 +31,15 @@ componentDidUpdate(prevProps, prevState) {
 }
 
  addImages = async (newNameImage) => {
-   const { page } = this.state;
+   const { page} = this.state;
   
     try {
       this.setState({ isLoading: true, error: false });
        const listImages = await fetchImages( newNameImage, page);
-       this.setState({ images: listImages.hits });
-     
+      //  this.setState({ images: listImages.hits });
+     this.setState(prevState =>({
+images: [...prevState.images, ...listImages.hits]
+     }))
      } catch (error) {
       toast.error('ERORR. Please try reloading this page!');
        this.setState({ error: true });
@@ -75,7 +77,7 @@ componentDidUpdate(prevProps, prevState) {
           <b>Oops! Something went wrong! Please try reloading this page! </b>
         )}
 
-      <ImageGalery images = {images}/>
+      {images.length > 0 && (<ImageGalery images = {images}/>)}
 
       {images.length > 0 && (<ButtonLoadMore onClick={this.handleLoadMore}/>)}
 
